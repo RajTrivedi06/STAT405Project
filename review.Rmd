@@ -1,0 +1,67 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+
+library(data.table)
+library(ggplot2)
+
+# Manually create the dataframe
+dt <- data.table(
+  coef_logit_playtime_forever = c(
+    -0.000548980819090963,
+    -0.000515449817017875,
+    -0.000497842159031072,
+    -0.00044163330969191
+  ),
+  coef_lm_playtime_forever = c(
+    0.00382865669355248,
+    0.00517927455673007,
+    0.00434816148921345,
+    0.00523812551920929
+  ),
+  r_squared_lm = c(
+    0.00311352937465403,
+    0.00536916429894264,
+    0.0039432011070197,
+    0.00355385878584596
+  )
+)
+
+# 1. Plot: Logistic Coefficients Are Consistently Negative
+ggplot(dt, aes(x = factor(1:nrow(dt)), y = coef_logit_playtime_forever)) +
+  geom_col(fill = "skyblue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  labs(title = "Consistent Negative Effect of Playtime on Positive Reviews",
+       x = "Chunk ID",
+       y = "Logistic Regression Coefficient (Playtime Forever)") +
+  theme_minimal()
+
+# 2. Plot: Linear Coefficients Are Consistently Positive
+ggplot(dt, aes(x = factor(1:nrow(dt)), y = coef_lm_playtime_forever)) +
+  geom_col(fill = "orange") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  labs(title = "Consistent Positive Effect of Playtime on Upvotes",
+       x = "Chunk ID",
+       y = "Linear Regression Coefficient (Playtime Forever)") +
+  theme_minimal()
+
+# 4. Plot: R² Values Show Non-Zero Model Fit
+ggplot(dt, aes(x = factor(1:nrow(dt)), y = r_squared_lm)) +
+  geom_col(fill = "mediumpurple") +
+  labs(title = "Linear Models Explain Some Variance (Non-zero R²)",
+       x = "Chunk ID",
+       y = "R² Value") +
+  theme_minimal()
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
